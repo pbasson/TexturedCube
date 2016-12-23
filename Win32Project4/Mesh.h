@@ -42,6 +42,8 @@ class Mesh: public IRenderable
 		ID3D11Buffer* pVertices = nullptr;
 		ID3D11Buffer* pIndices = nullptr;
 
+		float duby=0;
+
 		float angle = 0;
 
 		float xpos=0, ypos=0, zpos= 0;
