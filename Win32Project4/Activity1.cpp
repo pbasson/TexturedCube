@@ -1,19 +1,16 @@
-// Win32Project4.cpp : Defines the entry point for the application.
-//
-
 #include "stdafx.h"
 #include "Activity1.h"
 #include "WindowsWrapper.h"
 #include "DirectXWrapper.h"
 #include "Mesh.h"
+// Include Standard, Src Header, Win Wrapper, DirectXWrapper, Mesh
 
 
+#define MOUSE_SCALING ((float)(2.0*M_PI/1000.0))	//Define Mouse Scaling
+#define MOVEMENT_SPEED (0.5f/10.0f)			//Define Movement Speed
 
-#define MOUSE_SCALING ((float)(2.0*M_PI/1000.0))
-#define MOVEMENT_SPEED (0.5f/10.0f)
 
-
-void CheckMovementKeys(Vector3 &movement)
+void CheckMovementKeys(Vector3 &movement)		//CheckMovementKeys Fuction
 {
 	// zero the movement vector
 	movement.x = 0;
@@ -44,28 +41,33 @@ void CheckMovementKeys(Vector3 &movement)
 }
 
 
-
+//Main Entry
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR    lpCmdLine, int nCmdShow)
 {
+	//Start with WindowsWrapper & DirectXWrapper pointer creation
 	WindowsWrapper *ourWindow = new WindowsWrapper(1280, 720, L"Activity 1", L"WindowsWrapperClass");
 	DirectXWrapper *ourDX = DirectXWrapper::GetDirectXWrapper(ourWindow->GetHwnd(), GetModuleHandle(NULL));
 	
+	//Create Mesh
 	Mesh *mesh = new Mesh();
 	ourDX->AddRenderableObject(mesh);
 	Mesh *mesh1 = new Mesh();
 	ourDX->AddRenderableObject(mesh1);
 	mesh1->SetPosition(1, 4, 5);
 
-
+	//Enable Depth
 	ourDX->EnableZBuffer(true);
-
+	
+	//Camera Start Position
 	Vector3 camPos = Vector3(5.0f, 3.0f, -3.0f);
+	//Main Loop
 	do
-	{
-		POINT p;
+	{	
+		//Mouse variable 
+		POINT p; 
 		GetCursorPos(&p);
-		float yaw = (float)p.x*MOUSE_SCALING;
-		float pitch = (float)p.y*MOUSE_SCALING - (float)M_PI / 2;
+		float yaw = (float)p.x*MOUSE_SCALING; //Yaw view - Rotation on Pitch
+		float pitch = (float)p.y*MOUSE_SCALING - (float)M_PI / 2; //	
 		
 		if (pitch > (float)M_PI / 2)
 			pitch = (float)M_PI / 2;
@@ -79,7 +81,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR    l
 		ourDX->Render();
 	
 		Sleep(10);
-	} while (!ourWindow->QuitRequested());
+	} while (!ourWindow->QuitRequested()); 
 	
 	return 0;
 }
