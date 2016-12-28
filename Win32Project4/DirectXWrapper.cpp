@@ -3,12 +3,6 @@
 
 #include <new>
 
-// This wrapper provides simplified access to initialising DirectX and other functionality
-// There's some ugly details in here so you aren't expected to understand all of it yet, some comments are provided for the curious.
-// DirectX initialisation has always been a bit of a black art containing many strange incantations, even for experienced programmers. 
-// We only ever need to do it once however then everything gets simpler.
-// The code here is heavily based on MS sample code - this is normal as it's the most reliable way to guarantee it works at the end of the day.
-
 using namespace DirectX;
 
 struct ConstantBuffer
@@ -18,19 +12,17 @@ struct ConstantBuffer
 	float accumulator;
 };
 
-// we're using a factory method to create and delete the object, this is because they have to be 16 byte aligned, we achieve this by using something called operator new
-
 DirectXWrapper* DirectXWrapper::GetDirectXWrapper(HWND hwnd, HINSTANCE hinst)
 {
-	DirectXWrapper *ret = (DirectXWrapper*)_aligned_malloc(sizeof(DirectXWrapper), 16); // this returns some uninitialised memory with 16 byte alignment
-	new (ret)DirectXWrapper(hwnd, hinst); // this is like calling new but on a block of memory you specify
+	DirectXWrapper *ret = (DirectXWrapper*)_aligned_malloc(sizeof(DirectXWrapper), 16); 
+	new (ret)DirectXWrapper(hwnd, hinst);
 	return ret; 
 }
 
 void DirectXWrapper::DeleteDirectXWrapper(DirectXWrapper *pWrapper)
 {
-	pWrapper->~DirectXWrapper(); // we have to manually call the destructor
-	_aligned_free(pWrapper); // and call the correct deallocation
+	pWrapper->~DirectXWrapper(); 
+	_aligned_free(pWrapper);
 }
 
 // Create DirectX device and swap chains
@@ -120,10 +112,6 @@ DirectXWrapper::DirectXWrapper(HWND hwnd, HINSTANCE hinst) : ourWindowHandle(hwn
 		return;
 	}
 
-	// we now have a reference to a DXGI factory - the factory allows us to create more objects, these new objects are required to generate swap chains and enumerate adaptors
-
-	// Create swap chain - we do this by getting hold of an IDXGIFactory2 using the DXGI factory
-	// The swap chain is a series of buffers (typically 2), one is being displayed and is referred to as the foreground buffer, the other is rendered to (background), we swap them once per frame.
 	IDXGIFactory2* dxgiFactory2 = nullptr;
 	hr = dxgiFactory->QueryInterface(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory2));
 	if (dxgiFactory2)
