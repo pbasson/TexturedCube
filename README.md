@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project showcases a textured cube with an initial camera setup in perspective mode, featuring three cubes.
+This project, built using DirectX, showcases a textured cube with an initial perspective camera setup, featuring three cubes.
 
 ## Features
 
