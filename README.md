@@ -1,1 +1,7 @@
-This Project is of textured cube. The camera is initial set up in perpective mode and contains 3 cubes.
+# Textured Cube By Preetpal Basson
+
+## Overview
+
+This project showcases a textured cube with an initial camera setup in perspective mode, featuring three cubes.
+
+# END
